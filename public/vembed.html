@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <title>VT Augment</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="render-time" content="2023-07-14 10:13:34.075640">
+    <link rel="icon" href="https://www.virustotal.com/ui/static/widget/favicon.png">
+    <link href="https://cdnjs.cloudflare.com" rel="dns-prefetch">
+    <link href="https://storage.googleapis.com" rel="dns-prefetch">
+    <link href="https://www.googletagmanager.com" rel="dns-prefetch">
+    <link rel="stylesheet" href="https://storage.googleapis.com/vtcdn/assets/css/normalize.min.css">
+    <script>
+      window.VTLOGGEDIN = true;
+      window.VTPRIVILEGES = [];
+      (function () {window.parent.postMessage('VTAUGMENT:READY', '*')})();
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-7KT99XR32B"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-7KT99XR32B');
+    </script>
+    <style data-themed="">
+      :root {
+        --theme-background-primary: #313d5a;
+        --theme-background-secondary: #222c42;
+        --theme-foreground-primary: #ffffff;
+        --theme-borders: #4d6385;
+
+        --vt-red-500: #ff1f4a;
+        --vt-orange-500: #fc9929;
+        --vt-yellow-500: #fce967;
+        --vt-green-500: #22b573;
+        --vt-blue-500: #3a4eff;
+
+        --tab-padding: 1rem;
+      } /* Reset vscode higlighting */
+    </style>
+    <link rel="stylesheet" href="https://storage.googleapis.com/vtcdn/vtaugment/styles-default.1680274512249.css">
+  </head>
+  <body>
+    <header>
+  <nav>
+    <button class="vt-close-widget js-close-widget">
+    <span class="close-icon">
+              <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+                      <g id="close">
+    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+    <path d="M0 0h24v24H0z" fill="none"></path>
+  </g>
+                    </svg>          </span>
+    <span class="back-icon vt-utils-hide">
+              <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                        <g>
+    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+  </g>
+  </svg>          </span>
+    </button>
+    <button class="tab" rel="report" active="">
+      <span>Detections</span>
+    </button>
+    <div class="tab-separator"></div>
+    <button class="tab" rel="iocs">
+      <span>IoCs</span>
+    </button>
+    <div class="tab-separator"></div>
+    <button class="tab" rel="graph">
+      <span>Graph</span>
+    </button>
+    <div class="tab-separator"></div>
+    <button class="tab" rel="attribution">
+      <span>Attribution</span>
+    </button>
+  </nav>
+  <span class="vt-utils-flex">
+    <span class="hide-on-narrower">VT Augment by</span>
+    <a class="vt-logo-link vt-logo-link--wider hide-on-narrower" href="https://www.virustotal.com" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="564.3px" height="109px" viewBox="0 0 564.3 109" style="enable-background:new 0 0 564.3 109;" xml:space="preserve">
+      <g>
+      <path id="Shape_39_" class="st0" d="M158.6,78.7l-17.1-48.6h8.9c10.5,30.5,11.9,34.8,13,38.6c1-3.5,2.6-8.2,13.5-38.6h8.9   l-17.9,48.6H158.6z"></path>
+      <polygon id="Shape_38_" class="st0" points="194.2,78.7 194.2,30.2 202.5,30.2 202.5,78.7  "></polygon>
+      <path id="Shape_37_" class="st0" d="M299.6,58.3c0,6.6-0.6,10.8-2.4,13.9c-2.8,4.9-8.7,7.6-17.3,7.6c-8.1,0-14.1-2.4-16.9-7.8   c-1.7-3.1-2.3-7.7-2.3-13.2V30.2h8.3v28.4c0,4,0.3,6.8,1,8.6c1.2,3.1,4.2,5.5,10.3,5.5c5.3,0,8.5-1.8,10.1-5.1   c0.8-1.7,1.6-4.9,1.6-8.9V30.2h7.6V58.3z"></path>
+      <path id="Shape_36_" class="st0" d="M310.1,69.4c3.7,1.7,8.5,3.3,14.1,3.3c6.6,0,10-2.4,10-6.7c0-3.3-1.2-5.1-7.6-7.3l-6.8-2.3   c-7.1-2.4-10.4-6.6-10.4-13.5c0-7.4,5.8-13.9,18.3-13.9c4.9,0,9.7,0.8,13.6,2.2l-1.8,6.9c-4-1.3-8.8-2.2-12.8-2.2   c-6.7,0-8.6,3.5-8.6,6.4c0,2.9,0.9,4.9,6.5,6.7l6.8,2.4c8.3,2.8,11.2,7.2,11.2,13.5c0,7.7-5.3,14.6-18.4,14.6   c-6.1,0-12-1.4-16.2-3.4L310.1,69.4z"></path>
+      <polygon id="Shape_35_" class="st0" points="365.5,78.7 365.5,37.8 351,37.8 351,30.2 388.4,30.2 388.4,37.8 373.9,37.8   373.9,78.7  "></polygon>
+      <polygon id="Shape-Copy_3_" class="st0" points="452.2,78.7 452.2,37.8 437.7,37.8 437.7,30.2 475.1,30.2 475.1,37.8 460.6,37.8   460.6,78.7  "></polygon>
+      <path id="Shape_34_" class="st0" d="M412,79.7c-14.1,0-23-11.8-23-25.8c0-15.4,9-24.8,24.2-24.8c14.6,0,22.2,11.3,22.3,24.8   C435.6,67.8,426.8,79.7,412,79.7z M412.6,36.1c-9.6,0-14.8,6-14.8,17.9c0,14.5,6.3,18.7,14.6,18.7c8.6,0,14.4-5.3,14.4-18.3   C427,42.9,423.7,36.1,412.6,36.1z"></path>
+      <path id="Shape_33_" class="st0" d="M473.4,78.7l18.7-48.6h9.6l18.2,48.6h-8.9L506.1,66h-18.9l-5,12.8H473.4z M503.9,58.9   c-4.5-12.5-6-16.5-7-19.9c-1.1,3.3-2.4,7.1-7.4,19.9H503.9z"></path>
+      <polygon id="Shape_32_" class="st0" points="527.9,78.7 527.9,30.2 536.9,30.2 536.9,71.4 561.1,71.1 561.2,78.7  "></polygon>
+      <path id="Shape_31_" class="st0" d="M0,5.9l48.7,48.6L0,103h107.5V5.9H0z M97.1,92.6H24.5l38.4-38.1L24.5,16.3h72.6V92.6z"></path>
+      <g id="Shape_30_" transform="translate(311.000000, 35.000000)">
+        <path class="st0" d="M-70.2,22.7c7.2-2.4,10-7.5,10-13.7c0-6.7-3.5-10.9-8.6-12.5c-3-0.9-7.3-1.3-11.5-1.3h-6.8h-8.2v48.6h8.3    L-87,23.9l2.8-0.2c3.7,0,5.5,0.4,6.3,0.3L-67,43.7h9.2L-70.2,22.7z M-72.4,16.1c-2,1.1-4.9,1.4-8.4,1.4H-87V2.1h6.3    c3.3,0,5.8,0.1,7.7,0.8c2.6,1,4,3.3,4,6.6C-69.1,12.5-70.2,14.9-72.4,16.1z"></path>
+      </g>
+    </g>
+  
+    </svg>        </a>
+    <a class="vt-logo-link vt-logo-link--shorter vt-utils-hide show-on-narrower" href="https://www.virustotal.com" target="_blank">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                      <polygon points="80.2,94 98.7,75.1 98.7,6 89.3,22.3 89.3,84.6 23.5,84.6 58.3,50 23.5,15.4 82.3,15.4 98.7,6 98.7,6 1.3,6 45.4,50  1.3,94 "></polygon>
+      </svg>        </a>
+  </span>
+</header>
+<section rel="report">
+  <div class="vt-report">
+  <div class="vt-summary vt-utils-shadowed-layer">
+    <div class="vt-summary__scoring">
+      <div class="vt-detections ">
+  <div class="vt-detections__circle ">
+    <div class="vt-detections__circle__positives">
+            <span class="success-text">0</span>
+          </div>
+    <div class="vt-detections__circle__total">/ 69</div>
+  </div>
+  <svg id="circularProgressbar" class="vt-detections__progressbar " height="100" width="100" style="stroke-dasharray: 282.743; stroke-dashoffset: 0;">
+    <circle cx="50" cy="50" r="45" stroke-width="10" fill="transparent"></circle>
+  </svg>
+</div>          </div>
+    <div class="vt-summary__info">
+      <div class="vt-summary__info__title">
+                  No security vendors flagged this file as malicious
+              </div>
+            <div class="vt-summary__info__list">
+        <div>
+          <div class="vt-utils-bold">File type</div>
+          <a class="js-pivot vt-utils-pivot" data-pivot-key="search" data-pivot-val="type:&quot;peexe&quot;" href="https://www.virustotal.com/gui/search/type%253A%2522peexe%2522" target="_blank">Win32 EXE</a>
+        </div>
+        <div class="vt-summary__info__list__separator"></div>
+        <div>
+          <div class="vt-utils-bold">File size</div>
+          <a class="js-pivot vt-utils-pivot" data-pivot-key="search" data-pivot-val="size:1382936" href="https://www.virustotal.com/gui/search/size%253A1382936" target="_blank">62.86 MB</a>
+        </div>
+        <div class="vt-summary__info__list__separator"></div>
+        <div>
+          <div class="vt-utils-bold">Last analysis</div>
+          1 days ago
+        </div>
+        <div class="vt-summary__info__list__separator hide-on-narrower"></div>
+        <div class="vt-utils-flex hide-on-narrower">
+                    <div class="vt-summary__info__list__type-icon">
+                          <a class="js-pivot vt-utils-pivot" data-pivot-key="search" data-pivot-val="type:peexe" href="https://www.virustotal.com/gui/search/type%253Apeexe" target="_blank"><svg viewBox="0 0 560 554.1" preserveAspectRatio="xMidYMid meet" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;">
+                                                                        <g id="peexe" viewBox="0 0 560 554.1">
+    <g>
+      <path d="M124.9,476V353h81.5v22.8h-55.9v25.7h49.9v22.6h-49.9v29.7h60.1V476H124.9z"></path>
+      <path d="M216.5,476l41.7-64.4L219.6,353h30.8c15.7,22.9,22.2,33.3,26.6,40.4c4.4-7.1,10-17.1,25.7-40.2h28L291.9,412l42.8,64.1
+        h-31.5c-19.8-30.2-25.1-37.5-29.3-44.2L245.6,476H216.5z"></path>
+      <path d="M349.3,476V353h81.5v22.8H375v25.7h49.9v22.6H375v29.7h60.1V476H349.3z"></path>
+    </g>
+    <path d="M273.9,262.1c-4.2-3.6-6.8-8.9-7.1-14.5c-0.3-5.6,1.7-11.1,5.6-15.1c0.4-0.4,0.4-0.9,0.2-1.4l-4.6-9.7c0,0,0,0,0.1,0
+      L266,217c-0.1-0.2-0.2-0.3-0.4-0.4c0,0,0,0-0.1-0.1s-0.1-0.1-0.2-0.1c-0.2-0.1-0.3-0.1-0.5-0.1c-0.1,0-0.1,0-0.1,0
+      c-5.5,0.4-11.1-1.5-15.2-5.2c-4.1-3.7-6.6-9.1-6.8-14.6c0-0.5-0.4-1-0.9-1.2l-14.8-5.2c-0.8-0.3-1.1,0.1-1.4,0.4l0,0c0,0,0,0-0.1,0
+      c-1.4,1.6-3,2.9-4.7,4c-0.1,0.1-0.2,0.1-0.4,0.2c-0.4,0.3-0.9,0.5-1.4,0.8c-2.5,1.2-5.2,1.9-8,2.1c-5.5,0.3-11.1-1.7-15.1-5.5
+      c-0.4-0.3-0.9-0.4-1.4-0.2l-14.2,6.7c-0.5,0.2-0.8,0.7-0.7,1.2c0.4,5.6-1.5,11.1-5.2,15.2c-3.7,4.1-9.1,6.6-14.6,6.8
+      c-0.3,0-0.8,0-1.1,0.8l-3.6,10.2c0,0,0,0-0.1,0l-1.6,4.6c-0.2,0.5,0,1,0.4,1.4c4.2,3.6,6.8,8.9,7.1,14.4c0.3,5.6-1.7,11.1-5.5,15.1
+      c-0.3,0.4-0.4,0.9-0.2,1.4l6.7,14.2c0.4,0.8,0.9,0.7,1.2,0.7c5.5-0.4,11.1,1.5,15.2,5.2c4.1,3.7,6.6,9,6.8,14.6c0,0.5,0.4,1,0.8,1.2
+      l14.8,5.2c0.1,0,0.2,0,0.3,0c0.7,0.2,1-0.1,1.2-0.4c0.9-1.1,2-2,3.1-2.9c0.1,0,0.1-0.1,0.1-0.1c0.5-0.4,1-0.7,1.5-1
+      c0.4-0.2,0.8-0.5,1.2-0.7c0.2-0.1,0.4-0.2,0.6-0.3c2.5-1.2,5.1-1.9,7.9-2c5.5-0.3,11.1,1.7,15.1,5.5c0.3,0.2,0.6,0.6,1.4,0.2
+      l14.2-6.7l0,0l0,0c0.5-0.2,0.8-0.7,0.7-1.2c-0.4-5.5,1.5-11.1,5.2-15.2c2.2-2.4,4.9-4.2,7.9-5.4c0.1-0.1,0.3-0.1,0.5-0.2
+      c0.3-0.1,0.5-0.2,0.8-0.2c0.4-0.1,0.9-0.3,1.3-0.4c0.1,0,0.1,0,0.2,0c1.3-0.3,2.6-0.5,3.9-0.5c0.5,0,1-0.3,1.2-0.9l5.3-14.8
+      C274.5,262.9,274.3,262.4,273.9,262.1z M242.7,260.5c-2.9,8-8.8,14.1-15.9,17.4c-0.8,0.4-1.7,0.7-2.5,1c0,0,0,0-0.1,0
+      c-14.5,5.1-30.9-1.4-37.7-15.6c-5.8-12.3-2.7-26.5,6.7-35.3c0.1-0.1,0.1-0.1,0.2-0.2c0.4-0.4,0.9-0.8,1.4-1.2c0.3-0.3,0.7-0.6,1-0.8
+      c0.1-0.1,0.3-0.2,0.4-0.3c7.8-5.6,18.2-7.4,27.9-3.9C240,227.2,248.3,244.7,242.7,260.5z"></path>
+    <path d="M238.6,119.4c-4.8-2.8-8.4-7.4-9.8-12.8c-1.4-5.4-0.4-11.2,2.5-15.9c0.3-0.4,0.2-1-0.1-1.4l-6.4-8.6c0,0,0,0,0.1-0.1
+      l-2.9-3.9c-0.1-0.2-0.3-0.2-0.4-0.3c0,0,0,0-0.1,0s-0.1-0.1-0.2-0.1c-0.2,0-0.4-0.1-0.5,0c-0.1,0-0.1,0-0.2,0
+      c-5.4,1.5-11.2,0.7-15.9-2.2c-4.8-2.8-8.2-7.6-9.5-13c-0.1-0.5-0.5-0.9-1.1-1l-15.5-2.3c-0.9-0.1-1.1,0.3-1.3,0.6l0,0c0,0,0,0-0.1,0
+      c-1,1.8-2.3,3.4-3.8,4.8c-0.1,0.1-0.2,0.2-0.3,0.3c-0.4,0.4-0.8,0.7-1.2,1c-2.2,1.7-4.7,2.9-7.4,3.6c-5.4,1.4-11.2,0.5-15.9-2.5
+      c-0.4-0.3-1-0.2-1.4,0.1L134.6,75c-0.4,0.3-0.6,0.9-0.5,1.3c1.5,5.4,0.7,11.2-2.2,16c-2.8,4.8-7.6,8.3-13,9.5
+      c-0.3,0.1-0.8,0.2-1,1.1l-1.6,10.7c0,0,0,0-0.1,0l-0.7,4.8c-0.1,0.5,0.2,1,0.6,1.3c4.8,2.8,8.4,7.4,9.7,12.8
+      c1.4,5.4,0.5,11.2-2.5,15.9c-0.3,0.4-0.2,1,0.1,1.4l9.4,12.6c0.5,0.7,1,0.6,1.3,0.5c5.3-1.5,11.2-0.7,15.9,2.2
+      c4.8,2.8,8.2,7.6,9.5,13c0.1,0.5,0.5,0.9,1,1l15.5,2.3c0.1,0,0.2,0,0.3,0c0.7,0,0.9-0.3,1.1-0.6c0.7-1.2,1.5-2.4,2.5-3.4l0.1-0.1
+      c0.4-0.5,0.8-0.9,1.3-1.3c0.3-0.3,0.7-0.6,1.1-0.9c0.2-0.1,0.3-0.3,0.5-0.4c2.2-1.6,4.7-2.9,7.3-3.5c5.4-1.4,11.2-0.5,15.9,2.5
+      c0.3,0.2,0.7,0.4,1.4-0.1l12.6-9.4l0,0l0,0c0.4-0.3,0.6-0.8,0.5-1.3c-1.5-5.4-0.7-11.2,2.2-16c1.7-2.8,4-5.1,6.7-6.8
+      c0.1-0.1,0.3-0.2,0.4-0.3c0.2-0.1,0.5-0.3,0.7-0.4c0.4-0.2,0.8-0.4,1.2-0.6c0.1,0,0.1,0,0.2-0.1c1.2-0.5,2.5-1,3.8-1.3
+      c0.5-0.1,0.9-0.5,1-1.1l2.3-15.5C239.3,120.2,239,119.7,238.6,119.4z M207.6,124c-1.2,8.4-5.8,15.6-12.2,20.2
+      c-0.7,0.5-1.5,1-2.2,1.5c0,0,0,0-0.1,0c-13.2,7.9-30.6,4.6-40-8c-8.1-10.9-7.8-25.5-0.3-36c0.1-0.1,0.1-0.2,0.2-0.2
+      c0.4-0.5,0.8-1,1.1-1.4c0.3-0.3,0.5-0.7,0.8-1c0.1-0.1,0.3-0.2,0.4-0.4c6.6-7,16.4-10.8,26.6-9.3C198.5,91.8,210,107.3,207.6,124z"></path>
+    <path d="M489.5,217.8c-2.4,1.1-4.8,2.2-7.3,3c-0.1,0-0.1,0-0.2,0.1c-42.7,15.1-90.8-4.2-110.7-46c-17.1-36-8-77.8,19.6-103.8
+      c0.2-0.2,0.4-0.4,0.6-0.5c1.3-1.2,2.7-2.3,4.1-3.5c1-0.8,2-1.7,3-2.4c0.4-0.3,0.9-0.6,1.3-0.9c4.1-3,8.5-5.5,13.1-7.8
+      c-10.4-6.3-21.3-11.8-32.6-16.6c-12.8-5.4-25.9-9.7-39.3-13c-1.4,2-2.9,3.9-4.6,5.8c-10.9,12.1-26.6,19.4-43,19.9
+      c-1,0.1-2.5,0.1-3.3,2.5l-10.7,30c0,0-0.1,0-0.2,0l-4.8,13.5c-0.5,1.4,0,3.1,1.1,4.1c12.4,10.7,20,26.1,20.8,42.4
+      s-5.1,32.5-16.3,44.4c-1,1.1-1.3,2.8-0.7,4.1l19.8,41.6c1.1,2.3,2.5,2.2,3.6,2.1c16.1-1.2,32.6,4.4,44.7,15.4
+      c12.2,10.9,19.4,26.6,19.9,42.9c0.1,1.5,1,2.9,2.5,3.4l43.4,15.4c0.3,0.1,0.5,0,0.8,0c1.9,0.5,2.8-0.5,3.5-1.2c2.7-3.2,5.7-6,9-8.5
+      c0.1-0.1,0.3-0.2,0.4-0.3c1.4-1.1,2.9-2.1,4.4-3c1.1-0.7,2.4-1.3,3.5-1.9c0.5-0.3,1.1-0.6,1.7-0.9c7.2-3.5,15.1-5.6,23.2-6
+      c16.3-0.9,32.6,5.1,44.4,16.3c0.7,0.7,1.8,1.7,4.1,0.6l28.8-13.7c0.4-6.1,0.6-12.1,0.6-18.3c0-29.7-5-58.6-14.8-86.2
+      C514.2,202.5,502.6,211.7,489.5,217.8z"></path>
+  </g>
+                                        </svg></a>
+                      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <!-- ACTIONS -->
+  <div class="js-actions-view vt-actions">
+  <a class="js-pivot vt-utils-pivot vt-actions__action" target="_blank" data-pivot-key="file" data-pivot-val="783da70b032b8417e9d6b208ec55af0ba7b3c063336beed28b6b2e8f09cccd6c" href="https://www.virustotal.com/gui/file/783da70b032b8417e9d6b208ec55af0ba7b3c063336beed28b6b2e8f09cccd6c/">
+          <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                <g id="report">
+    <polygon points="17.4,20.8 2.9,20.8 10.7,12.3 2.9,3.7 17.2,3.7 17.2,4.7 5.1,4.7 12.1,12.3 5.1,19.8 17,19.8 19.8,16.6 19.8,8.4
+	       20.8,8.4 20.8,17 "></polygon>
+  </g>
+          </svg>        <div>Full report</div>
+  </a>
+
+     <span class="js-tooltip js-toggle-action vt-utils-hide" data-tippy-content="Pivot to similar files (same malware family, campaign or threat actor) in VirusTotal's global corpus.">
+      <a class="js-pivot vt-utils-pivot vt-actions__action" target="_blank" data-pivot-key="search" data-pivot-val="similar-to:913f7a00eaa5a8b386041aa6440183bca574805e4b1a699381ef01ba90ef35d3" href="https://www.virustotal.com/gui/search/similar-to%253A913f7a00eaa5a8b386041aa6440183bca574805e4b1a699381ef01ba90ef35d3">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+                              <g id="search">
+    <path d="M19.7,19L15,14.3c2-2.3,1.9-5.9-0.3-8.1c-2.3-2.3-6.1-2.3-8.5,0c-2.3,2.3-2.3,6.1,0,8.5c1.2,1.2,2.7,1.8,4.2,1.8
+        c1.4,0,2.7-0.5,3.8-1.4l4.7,4.7L19.7,19z M7,14C5,12.1,5,8.9,7,7c1-1,2.2-1.5,3.5-1.5C11.8,5.5,13,6,14,7C16,8.9,16,12.1,14,14
+        C12.1,16,8.9,16,7,14z"></path>
+  </g>
+            </svg>                <div>Similar files</div>
+      </a>
+   </span>
+   <span class="js-tooltip js-toggle-action" data-tippy-content="Pivoting to similar files (same malware family, campaign or threat actor) requires you to be signed in to VirusTotal and have a VT Enterprise license.">
+      <span class="vt-utils-disabled vt-actions__action">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+                              <g id="search">
+    <path d="M19.7,19L15,14.3c2-2.3,1.9-5.9-0.3-8.1c-2.3-2.3-6.1-2.3-8.5,0c-2.3,2.3-2.3,6.1,0,8.5c1.2,1.2,2.7,1.8,4.2,1.8
+        c1.4,0,2.7-0.5,3.8-1.4l4.7,4.7L19.7,19z M7,14C5,12.1,5,8.9,7,7c1-1,2.2-1.5,3.5-1.5C11.8,5.5,13,6,14,7C16,8.9,16,12.1,14,14
+        C12.1,16,8.9,16,7,14z"></path>
+  </g>
+            </svg>                <div>Similar files</div>
+      </span>
+   </span>
+  
+  <span class="js-tooltip vt-utils-hide js-graph-vti" data-tippy-content="Explore this item in VirusTotal's threat graph, visually discover related IoCs.">
+    <a class="vt-utils-pivot vt-actions__action" target="_blank" href="https://www.virustotal.com/graph/913f7a00eaa5a8b386041aa6440183bca574805e4b1a699381ef01ba90ef35d3">
+              <svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                  <g id="graph">
+    <path d="M22.3,6.5v4.2l-1.1,1.1l0.7,0.7l1-1h4.4v-5H22.3z M26.3,10.5h-3v-3h3V10.5z"></path>
+    <rect x="24.3" y="13.5" width="1" height="2"></rect>
+    <rect x="24.3" y="18.5" width="1" height="2"></rect>
+    <rect x="8.7" y="13.5" width="1" height="2"></rect>
+    <rect x="8.7" y="18.5" width="1" height="2"></rect>
+    <rect x="13.6" y="8.2" width="2" height="1"></rect>
+    <rect x="18.6" y="8.2" width="2" height="1"></rect>
+    <path d="M12.3,21.4l-1.1,1.1H6.7v5h5v-4.1l1.3-1.3L12.3,21.4z M10.7,26.5h-3v-3h3V26.5z"></path>
+    <rect x="18.6" y="24.5" width="2" height="1"></rect>
+    <rect x="13.6" y="24.5" width="2" height="1"></rect>
+    <path d="M22.1,21.3L21.4,22l0.9,0.9v4.6h5v-5h-4L22.1,21.3z M26.3,26.5h-3v-3h3V26.5z"></path>
+    <polygon points="20,19.2 19.9,19.4 19.9,14.6 21.2,13.2 20.5,12.5 19.1,13.9 19.5,14.3 14.7,14.3 14.8,14.3 13.3,12.9 12.6,13.6
+    14.1,15 14.3,14.7 14.3,19.4 13,20.7 13.7,21.4 15.1,20 15,19.9 19.3,19.9 19.3,19.9 20.7,21.3 21.4,20.6   "></polygon>
+    <path d="M11.9,12.9l0.7-0.7l-1-1V6.5h-5v5h3.9L11.9,12.9z M7.7,7.5h3v3h-3V7.5z"></path>
+  </g>
+        </svg>            <div>VT Graph</div>
+    </a>
+  </span>
+  <span class="js-tooltip js-graph-signin" data-tippy-content="Explore this item in VirusTotal's threat graph, visually discover some related IoCs. Get a VT Enterprise license to discover all related IoCs.">
+    <a class="vt-utils-pivot vt-actions__action" target="_blank" href="https://www.virustotal.com/graph/913f7a00eaa5a8b386041aa6440183bca574805e4b1a699381ef01ba90ef35d3">
+              <svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                  <g id="graph">
+    <path d="M22.3,6.5v4.2l-1.1,1.1l0.7,0.7l1-1h4.4v-5H22.3z M26.3,10.5h-3v-3h3V10.5z"></path>
+    <rect x="24.3" y="13.5" width="1" height="2"></rect>
+    <rect x="24.3" y="18.5" width="1" height="2"></rect>
+    <rect x="8.7" y="13.5" width="1" height="2"></rect>
+    <rect x="8.7" y="18.5" width="1" height="2"></rect>
+    <rect x="13.6" y="8.2" width="2" height="1"></rect>
+    <rect x="18.6" y="8.2" width="2" height="1"></rect>
+    <path d="M12.3,21.4l-1.1,1.1H6.7v5h5v-4.1l1.3-1.3L12.3,21.4z M10.7,26.5h-3v-3h3V26.5z"></path>
+    <rect x="18.6" y="24.5" width="2" height="1"></rect>
+    <rect x="13.6" y="24.5" width="2" height="1"></rect>
+    <path d="M22.1,21.3L21.4,22l0.9,0.9v4.6h5v-5h-4L22.1,21.3z M26.3,26.5h-3v-3h3V26.5z"></path>
+    <polygon points="20,19.2 19.9,19.4 19.9,14.6 21.2,13.2 20.5,12.5 19.1,13.9 19.5,14.3 14.7,14.3 14.8,14.3 13.3,12.9 12.6,13.6
+    14.1,15 14.3,14.7 14.3,19.4 13,20.7 13.7,21.4 15.1,20 15,19.9 19.3,19.9 19.3,19.9 20.7,21.3 21.4,20.6   "></polygon>
+    <path d="M11.9,12.9l0.7-0.7l-1-1V6.5h-5v5h3.9L11.9,12.9z M7.7,7.5h3v3h-3V7.5z"></path>
+  </g>
+        </svg>            <div>VT Graph</div>
+    </a>
+  </span>
+  <span class="js-tooltip js-graph-vti js-graph-signin vt-utils-hide" data-tippy-content="Explore in VirusTotal Graph. Requires you to be signed in to VirusTotal. Get a VT Enterprise license to enjoy all the benefits.">
+    <span class="vt-utils-disabled vt-actions__action">
+              <svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                  <g id="graph">
+    <path d="M22.3,6.5v4.2l-1.1,1.1l0.7,0.7l1-1h4.4v-5H22.3z M26.3,10.5h-3v-3h3V10.5z"></path>
+    <rect x="24.3" y="13.5" width="1" height="2"></rect>
+    <rect x="24.3" y="18.5" width="1" height="2"></rect>
+    <rect x="8.7" y="13.5" width="1" height="2"></rect>
+    <rect x="8.7" y="18.5" width="1" height="2"></rect>
+    <rect x="13.6" y="8.2" width="2" height="1"></rect>
+    <rect x="18.6" y="8.2" width="2" height="1"></rect>
+    <path d="M12.3,21.4l-1.1,1.1H6.7v5h5v-4.1l1.3-1.3L12.3,21.4z M10.7,26.5h-3v-3h3V26.5z"></path>
+    <rect x="18.6" y="24.5" width="2" height="1"></rect>
+    <rect x="13.6" y="24.5" width="2" height="1"></rect>
+    <path d="M22.1,21.3L21.4,22l0.9,0.9v4.6h5v-5h-4L22.1,21.3z M26.3,26.5h-3v-3h3V26.5z"></path>
+    <polygon points="20,19.2 19.9,19.4 19.9,14.6 21.2,13.2 20.5,12.5 19.1,13.9 19.5,14.3 14.7,14.3 14.8,14.3 13.3,12.9 12.6,13.6
+    14.1,15 14.3,14.7 14.3,19.4 13,20.7 13.7,21.4 15.1,20 15,19.9 19.3,19.9 19.3,19.9 20.7,21.3 21.4,20.6   "></polygon>
+    <path d="M11.9,12.9l0.7-0.7l-1-1V6.5h-5v5h3.9L11.9,12.9z M7.7,7.5h3v3h-3V7.5z"></path>
+  </g>
+        </svg>            <div>VT Graph</div>
+    
+  </span>
+</span></div>
+  <div class="vt-utils-shadowed-layer">
+    <!-- DETECTION -->
+    <div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+      <div class="vt-generic-box__header__title">
+      Security vendors scanning results
+      </div>
+      <div class="vt-generic-box__header__actions">
+                <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="Malicious detections as reported by over 70 security vendor solutions/datasets acting on the item under consideration.">
+                              <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>                  </div>
+      </div>
+    </div>
+  <div class="vt-detection-list vt-table--expandable js-expandable-table">
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Symantec Mobile Insight:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Trustlook:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Avast-Mobile:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">BitDefenderFalx:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Bkav Pro:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Lionic:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">tehtris:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">eScan:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">FireEye:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">CAT-QuickHeal:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">McAfee:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Cylance:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Sangfor Engine Zero:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">K7AntiVirus:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">BitDefender:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">K7GW:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">CrowdStrike:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Baidu:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">VirIT:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Cyren:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Symantec:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Elastic:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">ESET-NOD32:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Cynet:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">SecureAge APEX:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Palo Alto Networks (Known Signatures):
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">ClamAV:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Kaspersky:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Alibaba:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">NANO-Antivirus:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">ViRobot:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Avast:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Rising:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Emsisoft:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">F-Secure:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">DrWeb:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Zillya:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">TrendMicro:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">McAfee-GW-Edition:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Trapmine:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">CMC:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Sophos:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Ikarus:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Jiangmin:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Webroot:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Avira (no cloud):
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">MAX:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Antiy-AVL:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Microsoft:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Gridinsoft:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Xcitium:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Arcabit:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">SUPERAntiSpyware:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">ZoneAlarm by Check Point:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">GData:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Google:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">AhnLab-V3:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Acronis:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">BitDefenderTheta:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">ALYac:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">TACHYON:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">VBA32:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Malwarebytes:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Panda:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Zoner:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">TrendMicro-HouseCall:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Tencent:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Yandex:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">SentinelOne (Static ML):
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">MaxSecure:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">Fortinet:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">AVG:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+          <div class="vt-detection-list__result">
+        <span class="vt-utils-ellipsis vt-utils-engine-verdict vt-utils-bold">DeepInstinct:
+                  <span class="undetected-color">Undetected</span>
+                </span>
+      </div>
+            <span class="vt-table__expand-action js-toggle-table">
+      <a href="#" class="js-chevron-up" hidden="">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+                  <g id="chevron-up">
+    <path d="M4.3,0L4.3,0c0.1,0,0.3,0,0.5,0.2l3.6,3.7c0.2,0.2,0.2,0.5,0,0.7c-0.2,0.2-0.5,0.2-0.7,0L4.3,1.2L0.9,4.6  c-0.2,0.2-0.5,0.2-0.7,0S0,4.1,0.2,3.9l3.7-3.7C4,0.1,4.2,0,4.3,0z"></path>
+  </g>
+                        </svg>              </a>
+      <a href="#" class="js-chevron-down">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+                    <g id="chevron-down">
+    <path d="M4.3,4.8L4.3,4.8c-0.1,0-0.3,0-0.5-0.2L0.2,0.9C0,0.7,0,0.4,0.2,0.2C0.4,0,0.7,0,0.9,0.2l3.4,3.4l3.4-3.4  C7.9,0,8.2,0,8.4,0.2s0.2,0.5,0,0.7L4.7,4.6C4.6,4.7,4.4,4.8,4.3,4.8z"></path>
+  </g>
+                      </svg>              </a>
+    </span>
+      </div>
+</div>
+
+    
+
+    
+
+    
+
+      <!-- BASIC PROPERTIES -->
+    <div class="vt-generic-box">
+      <div class="vt-generic-box__header">
+        <div class="vt-generic-box__header__title">Basic Properties</div>
+        <div class="vt-generic-box__header__actions">
+          <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="Basic attributes that allow you to further identify the file being studied.">
+                          <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>                      </div>
+        </div>
+      </div>
+      <div class="vt-table">
+                <div class="vt-table__row">
+          <div class="vt-table__col vt-utils-bold">MD5</div>
+          <div class="vt-table__col vt-table__col--breakable">
+            <a class="js-pivot vt-utils-pivot" data-pivot-key="search" data-pivot-val="671d8cc7e5b589fca0ee7268e594a73c" href="https://www.virustotal.com/gui/file/783da70b032b8417e9d6b208ec55af0ba7b3c063336beed28b6b2e8f09cccd6c/" target="_blank">671d8cc7e5b589fca0ee7268e594a73c</a>
+          </div>
+        </div>
+                        <div class="vt-table__row">
+          <div class="vt-table__col vt-utils-bold">SHA-1</div>
+          <div class="vt-table__col vt-table__col--breakable">
+            <a class="js-pivot vt-utils-pivot" data-pivot-key="search" data-pivot-val="906fe897cb8410e6cd4df6a6e5f2b04f503f4aa2" href="https://www.virustotal.com/gui/file/783da70b032b8417e9d6b208ec55af0ba7b3c063336beed28b6b2e8f09cccd6c/" target="_blank">906fe897cb8410e6cd4df6a6e5f2b04f503f4aa2</a>
+          </div>
+        </div>
+                        <div class="vt-table__row">
+          <div class="vt-table__col vt-utils-bold">SHA-256</div>
+          <div class="vt-table__col vt-table__col--breakable">
+            <a class="js-pivot vt-utils-pivot" data-pivot-key="search" data-pivot-val="913f7a00eaa5a8b386041aa6440183bca574805e4b1a699381ef01ba90ef35d3" href="https://www.virustotal.com/gui/file/783da70b032b8417e9d6b208ec55af0ba7b3c063336beed28b6b2e8f09cccd6c/" target="_blank">913f7a00eaa5a8b386041aa6440183bca574805e4b1a699381ef01ba90ef35d3</a>
+          </div>
+        </div>
+                 <!-- full report -->
+                <div class="vt-table__row">
+          <div class="vt-table__col vt-utils-bold">File type</div>
+          <div class="vt-table__col vt-table__col--breakable">
+            <a class="js-pivot vt-utils-pivot" data-pivot-key="search" data-pivot-val="type:&quot;peexe&quot;" href="https://www.virustotal.com/gui/search/type%253A%2522peexe%2522" target="_blank">Win32 EXE</a>
+          </div>
+        </div>
+                        <div class="vt-table__row">
+          <div class="vt-table__col vt-utils-bold">Magic label</div>
+          <div class="vt-table__col vt-table__col--breakable">
+            <a class="js-pivot vt-utils-pivot" data-pivot-key="search" data-pivot-val="magic:&quot;PE32 executable (GUI) Intel 80386, for MS Windows&quot;" href="https://www.virustotal.com/gui/search/magic%253A%2522PE32%2520executable%2520(GUI)%2520Intel%252080386%252C%2520for%2520MS%2520Windows%2522" target="_blank">PE32 executable (GUI) Intel 80386, for MS Windows</a>
+          </div>
+        </div>
+                        <div class="vt-table__row">
+          <div class="vt-table__col vt-utils-bold">File size</div>
+          <div class="vt-table__col vt-table__col--breakable">
+            <a class="js-pivot vt-utils-pivot" data-pivot-key="search" data-pivot-val="size:1382936" href="https://www.virustotal.com/gui/search/size%253A1382936" target="_blank">62.86 MB (65917979 bytes)</a>
+          </div>
+        </div>
+              </div>
+    </div>
+
+
+    <!-- RELEVANT DATES -->
+    <div class="vt-generic-box">
+      <div class="vt-generic-box__header">
+        <div class="vt-generic-box__header__title">Relevant dates</div>
+        <div class="vt-generic-box__header__actions">
+          <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="Relevant dates related to the file being studied.">
+                          <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>                      </div>
+        </div>
+      </div>
+      <div class="vt-table">
+         <!-- full_report -->
+                <div class="vt-table__row">
+          <div class="vt-table__col vt-utils-bold">First submission to VT</div>
+          <div class="vt-table__col">2023-07-10 23:12:37 </div>
+        </div>
+                        <div class="vt-table__row">
+          <div class="vt-table__col vt-utils-bold">Last Submission to VT</div>
+          <div class="vt-table__col">2023-07-14 18:06:41 </div>
+        </div>
+                        <div class="vt-table__row">
+          <div class="vt-table__col vt-utils-bold">Last Analysis by VT</div>
+          <div class="vt-table__col">2023-07-14 18:06:41 </div>
+        </div>
+              </div>
+    </div>
+
+
+    
+
+    
+
+    
+
+     <!-- full report -->
+
+    <!-- SUBMISSION -->
+      </div>
+</div>
+    <div class="vt-alert-panel js-no-signed-alert vt-utils-hide">
+    <span>You are not signed in to VirusTotal. If you have a <a target="_blank" href="https://www.virustotal.com/gui/services-overview" class="vt-utils-pivot">VT ENTERPRISE</a> license, make sure you sign in to view advanced threat reputation and context.</span>
+    <a target="_blank" href="https://www.virustotal.com/gui/sign-in" class="vt-alert-panel__button">Sign In</a>
+  </div>
+  <div class="vt-alert-panel js-no-vti-alert">
+    <span>You are seeing limited threat information, with <a target="_blank" href="https://www.virustotal.com/gui/services-overview" class="vt-utils-pivot">VT ENTERPRISE</a> you can enjoy advanced context and reputation directly in this widget.</span>
+    <a target="_blank" href="https://www.virustotal.com/gui/services-overview" class="vt-alert-panel__button">Learn More</a>
+  </div>
+</section>
+<section rel="iocs" hidden="">
+    <div class="vt-alert-panel js-no-signed-alert vt-utils-hide">
+    <span>You are not signed in to VirusTotal. If you have a <a target="_blank" href="https://www.virustotal.com/gui/services-overview" class="vt-utils-pivot">VT ENTERPRISE</a> license, make sure you sign in to view advanced threat reputation and context.</span>
+    <a target="_blank" href="https://www.virustotal.com/gui/sign-in" class="vt-alert-panel__button">Sign In</a>
+  </div>
+  <div class="vt-alert-panel js-no-vti-alert">
+    <span>You are seeing limited threat information, with <a target="_blank" href="https://www.virustotal.com/gui/services-overview" class="vt-utils-pivot">VT ENTERPRISE</a> you can enjoy advanced context and reputation directly in this widget.</span>
+    <a target="_blank" href="https://www.virustotal.com/gui/services-overview" class="vt-alert-panel__button">Learn More</a>
+  </div>
+    <!-- FAKE DOWNLOAD URLS -->
+      <div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">Download Urls</div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="In the wild URLs from where the file has been downloaded.">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>              </div>
+    </div>
+  </div>
+  <div class="vt-table vt-utils-blur">
+    <div class="vt-table__row">
+      <div class="vt-table__col">Scanned</div>
+      <div class="vt-table__col">Detections</div>
+      <div class="vt-table__col">Type</div>
+      <div class="vt-table__col">Name</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+  </div>
+</div>  
+
+  <!-- FAKE CONTACTED URLS -->
+      <div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">Contacted Urls</div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="Contacted URLs from the file being studied.">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>              </div>
+    </div>
+  </div>
+  <div class="vt-table vt-utils-blur">
+    <div class="vt-table__row">
+      <div class="vt-table__col">Scanned</div>
+      <div class="vt-table__col">Detections</div>
+      <div class="vt-table__col">Type</div>
+      <div class="vt-table__col">Name</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+  </div>
+</div>  
+
+  <!-- FAKE CONTACTED DOMAINS -->
+      <div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">Contacted Domains</div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="Contacted Domains from the file being studied.">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>              </div>
+    </div>
+  </div>
+  <div class="vt-table vt-utils-blur">
+    <div class="vt-table__row">
+      <div class="vt-table__col">Scanned</div>
+      <div class="vt-table__col">Detections</div>
+      <div class="vt-table__col">Type</div>
+      <div class="vt-table__col">Name</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+  </div>
+</div>  
+
+  <!-- FAKE CONTACTED IPs -->
+      <div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">Contacted IPs</div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="Contacted IPs from the file being studied.">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>              </div>
+    </div>
+  </div>
+  <div class="vt-table vt-utils-blur">
+    <div class="vt-table__row">
+      <div class="vt-table__col">Scanned</div>
+      <div class="vt-table__col">Detections</div>
+      <div class="vt-table__col">Type</div>
+      <div class="vt-table__col">Name</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+  </div>
+</div>  
+
+  <!-- FAKE EMBEDDED URLS -->
+      <div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">Embedded Urls</div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="[Heuristic] Embedded Urls that were found when running strings in the sample.">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>              </div>
+    </div>
+  </div>
+  <div class="vt-table vt-utils-blur">
+    <div class="vt-table__row">
+      <div class="vt-table__col">Scanned</div>
+      <div class="vt-table__col">Detections</div>
+      <div class="vt-table__col">Type</div>
+      <div class="vt-table__col">Name</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+  </div>
+</div>  
+
+  <!-- FAKE EMBEDDED DOMAINS -->
+      <div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">Embedded Domains</div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="[Heuristic] Embedded Domains that were found when running strings in the sample.">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>              </div>
+    </div>
+  </div>
+  <div class="vt-table vt-utils-blur">
+    <div class="vt-table__row">
+      <div class="vt-table__col">Scanned</div>
+      <div class="vt-table__col">Detections</div>
+      <div class="vt-table__col">Type</div>
+      <div class="vt-table__col">Name</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+  </div>
+</div>  
+
+  <!-- FAKE EMBEDDED IPs -->
+      <div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">Embedded IPs</div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="[Heuristic] Embedded IPs that were found when running strings in the sample.">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>              </div>
+    </div>
+  </div>
+  <div class="vt-table vt-utils-blur">
+    <div class="vt-table__row">
+      <div class="vt-table__col">Scanned</div>
+      <div class="vt-table__col">Detections</div>
+      <div class="vt-table__col">Type</div>
+      <div class="vt-table__col">Name</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+  </div>
+</div>  
+
+  <!-- FAKE EMAIL PARENTS -->
+      <div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">Email Parents</div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="Email files submitted to VirusTotal that contain the file being studied as an attachment.">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>              </div>
+    </div>
+  </div>
+  <div class="vt-table vt-utils-blur">
+    <div class="vt-table__row">
+      <div class="vt-table__col">Scanned</div>
+      <div class="vt-table__col">Detections</div>
+      <div class="vt-table__col">Type</div>
+      <div class="vt-table__col">Name</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+  </div>
+</div>  
+
+    <!-- FAKE EXECUTION PARENTS -->
+      <div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">Execution Parents</div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="Files that create the file being studied upon execution in a sandbox environment.">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>              </div>
+    </div>
+  </div>
+  <div class="vt-table vt-utils-blur">
+    <div class="vt-table__row">
+      <div class="vt-table__col">Scanned</div>
+      <div class="vt-table__col">Detections</div>
+      <div class="vt-table__col">Type</div>
+      <div class="vt-table__col">Name</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+  </div>
+</div>  
+
+  <!-- FAKE COMPRESSED PARENTS -->
+      <div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">Compressed Parents</div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="Bundled files that contain the file being studied.">
+                  <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>              </div>
+    </div>
+  </div>
+  <div class="vt-table vt-utils-blur">
+    <div class="vt-table__row">
+      <div class="vt-table__col">Scanned</div>
+      <div class="vt-table__col">Detections</div>
+      <div class="vt-table__col">Type</div>
+      <div class="vt-table__col">Name</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+    <div class="vt-table__row">
+      <div class="vt-table__col">9999-01-01</div>
+      <div class="vt-table__col">5 / 18</div>
+      <div class="vt-table__col">xex</div>
+      <div class="vt-table__col vt-table__col--breakable">asjhnbelq_cnje.piz</div>
+    </div>
+  </div>
+</div>  </section>
+<section rel="graph" hidden="">
+    <div class="vt-alert-panel js-no-signed-alert vt-utils-hide">
+    <span>You are not signed in to VirusTotal. If you have a <a target="_blank" href="https://www.virustotal.com/gui/services-overview" class="vt-utils-pivot">VT ENTERPRISE</a> license, make sure you sign in to view advanced threat reputation and context.</span>
+    <a target="_blank" href="https://www.virustotal.com/gui/sign-in" class="vt-alert-panel__button">Sign In</a>
+  </div>
+  <div class="vt-alert-panel js-no-vti-alert">
+    <span>You are seeing limited threat information, with <a target="_blank" href="https://www.virustotal.com/gui/services-overview" class="vt-utils-pivot">VT ENTERPRISE</a> you can enjoy advanced context and reputation directly in this widget.</span>
+    <a target="_blank" href="https://www.virustotal.com/gui/services-overview" class="vt-alert-panel__button">Learn More</a>
+  </div>
+  <div class="vt-utils-center">
+  <img class="vt-utils-mt-1_5rem vt-utils-w-full" src="https://storage.googleapis.com/vtcdn/vtaugment/img/graph.png" alt="Graph visualization">
+</div>
+</section>
+<section rel="attribution" hidden="">
+    <div class="vt-alert-panel js-no-signed-alert vt-utils-hide">
+    <span>You are not signed in to VirusTotal. If you have a <a target="_blank" href="https://www.virustotal.com/gui/services-overview" class="vt-utils-pivot">VT ENTERPRISE</a> license, make sure you sign in to view advanced threat reputation and context.</span>
+    <a target="_blank" href="https://www.virustotal.com/gui/sign-in" class="vt-alert-panel__button">Sign In</a>
+  </div>
+  <div class="vt-alert-panel js-no-vti-alert">
+    <span>You are seeing limited threat information, with <a target="_blank" href="https://www.virustotal.com/gui/services-overview" class="vt-utils-pivot">VT ENTERPRISE</a> you can enjoy advanced context and reputation directly in this widget.</span>
+    <a target="_blank" href="https://www.virustotal.com/gui/services-overview" class="vt-alert-panel__button">Learn More</a>
+  </div>
+  <div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">
+      Campaigns &amp; Malware Toolkits
+    </div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="Community contributed IoC collections - often threat campaigns or malware toolkit groupings - that contain the observable being studied.">
+         <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>       </div>
+    </div>
+  </div>
+  <div class="collections">
+            <div class="collection fake">
+      <div class="collection__icons">
+        <div class="collection__icons__img"></div>
+        <div class="collection__icons__img"></div>
+        <div class="collection__icons__img"></div>
+      </div>
+      <div class="divider"></div>
+      <div class="collection__details">
+        <div class="collection__details__counters">
+          <span> <strong>Files:</strong> 000 </span>
+          <span> <strong>URLs:</strong> 000 </span>
+          <span> <strong>Domains:</strong> 000 </span>
+          <span> <strong>IPs:</strong> 000 </span>
+        </div>
+        <div>Lorem ipsum</div>
+      </div>
+    </div>
+        <div class="collection fake">
+      <div class="collection__icons">
+        <div class="collection__icons__img"></div>
+        <div class="collection__icons__img"></div>
+        <div class="collection__icons__img"></div>
+      </div>
+      <div class="divider"></div>
+      <div class="collection__details">
+        <div class="collection__details__counters">
+          <span> <strong>Files:</strong> 000 </span>
+          <span> <strong>URLs:</strong> 000 </span>
+          <span> <strong>Domains:</strong> 000 </span>
+          <span> <strong>IPs:</strong> 000 </span>
+        </div>
+        <div>Lorem ipsum</div>
+      </div>
+    </div>
+          </div>
+</div>
+
+<div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">
+      Threat Actors
+    </div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="Threat actors attributed to collections where this file belongs to.">
+         <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>       </div>
+    </div>
+  </div>
+  
+  <div class="collections js-attribution-no-vtinsights">
+        <div class="collection fake">
+      <div class="collection__icons">
+        <div class="collection__icons__img"></div>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <div class="collection__summary vt-utils-min-w-100">
+          <span class="collection__summary__name">
+            Lorem ipsum
+          </span>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="collection__details">
+        <div class="collection__summary">
+          <strong>IoCs</strong>: 000 |
+          <strong>Suspected sponsor</strong>: ZZ |
+          <strong>First seen</strong>: 2020-10-20
+        </div>
+        <div>Lorem ipsum dolor sit amet.</div>
+      </div>
+    </div>
+        <div class="collection fake">
+      <div class="collection__icons">
+        <div class="collection__icons__img"></div>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <div class="collection__summary vt-utils-min-w-100">
+          <span class="collection__summary__name">
+            Lorem ipsum
+          </span>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="collection__details">
+        <div class="collection__summary">
+          <strong>IoCs</strong>: 000 |
+          <strong>Suspected sponsor</strong>: ZZ |
+          <strong>First seen</strong>: 2020-10-20
+        </div>
+        <div>Lorem ipsum dolor sit amet.</div>
+      </div>
+    </div>
+      </div>
+</div>
+
+<div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">
+      References
+    </div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="References attributed to the observable being studied.">
+         <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>       </div>
+    </div>
+  </div>
+  
+  <div class="collections js-attribution-no-vtinsights">
+        <div class="collection fake">
+      <div class="collection__icons">
+        <div class="collection__icons__img"></div>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <div class="collection__summary">
+          <span class="collection__summary__name">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+          </span>
+        </div>
+        <div class="collection__details">
+          <div class="collection__details__counters">
+            <span> <strong>Files:</strong> 00 </span>
+            <span> <strong>URLs:</strong> 00 </span>
+            <span> <strong>Domains:</strong> 00 </span>
+            <span> <strong>IPs:</strong> 00 </span>
+            <span> <strong>Collections:</strong> 00 </span>
+            <span> <strong>Threat actors:</strong> 00 </span>
+          </div>
+        </div>
+      </div>
+    </div>
+        <div class="collection fake">
+      <div class="collection__icons">
+        <div class="collection__icons__img"></div>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <div class="collection__summary">
+          <span class="collection__summary__name">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+          </span>
+        </div>
+        <div class="collection__details">
+          <div class="collection__details__counters">
+            <span> <strong>Files:</strong> 00 </span>
+            <span> <strong>URLs:</strong> 00 </span>
+            <span> <strong>Domains:</strong> 00 </span>
+            <span> <strong>IPs:</strong> 00 </span>
+            <span> <strong>Collections:</strong> 00 </span>
+            <span> <strong>Threat actors:</strong> 00 </span>
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+</div>
+
+<div class="help-vtinsights js-attribution-no-vtinsights">Threat actors and References require access to the VirusTotal Threat Landscape module, <a class="vt-utils-pivot" target="_blank" href="https://www.virustotal.com/gui/contact-us/premium-services">contact us to get access</a>.</div>
+
+<div class="vt-generic-box">
+  <div class="vt-generic-box__header">
+    <div class="vt-generic-box__header__title">Comments</div>
+    <div class="vt-generic-box__header__actions">
+      <div class="vt-generic-box__header__action js-tooltip" data-tippy-content="Context contributed by community users through the main VirusTotal website for the observable being studied.">
+                <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <g id="info-outline">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,21.1c-4.9,0-8.8-4-8.8-8.8c0-4.9,4-8.8,8.8-8.8c4.9,0,8.8,4,8.8,8.8C20.8,17.1,16.9,21.1,12,21.1z M12,4.5
+      c-4.3,0-7.8,3.5-7.8,7.8c0,4.3,3.5,7.8,7.8,7.8c4.3,0,7.8-3.5,7.8-7.8C19.8,8,16.3,4.5,12,4.5z"></path>
+    <path d="M11.4,7.6h1.3v2l-1.3,1V7.6z M12.6,11v5.9h-1.3V12L12.6,11z"></path>
+  </g>
+                            </svg>              </div>
+    </div>
+  </div>
+  <div class="comments">
+        <div class="comment fake">
+      <div class="comment__header">
+        <div class="comment__header__avatar"></div>
+        <div>
+          <div class="comment__header__author">Lorem ipsum</div>
+          <div class="comment__header__date">00-00-0000</div>
+        </div>
+      </div>
+      <div class="comment__content">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec
+        viverra tellus. Duis vitae commodo odio. Donec nec justo eget urna
+        hendrerit volutpat.
+      </div>
+    </div>
+      </div>
+</div></section>
+<footer>
+  <a class="vt-utils-pivot" target="_blank" href="https://support.virustotal.com/hc/en-us/articles/115002126889-How-it-works">How it works</a>
+  VirusTotal © Copyright 2023
+</footer>
+<div class="back-to-top">
+  <a id="back-to-top-link" href="#">
+          <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
+                <g id="back-to-top">
+    <path stroke-miterlimit="10" d="M18.9,3.5"></path>
+    <path d="M12,9.6L12,9.6c0.1,0,0.3,0.1,0.4,0.1l3.7,3.7c0.2,0.2,0.2,0.5,0,0.7s-0.5,0.2-0.7,0L12,10.8l-3.4,3.4
+      c-0.2,0.2-0.5,0.2-0.7,0s-0.2-0.5,0-0.7l3.7-3.7C11.7,9.7,11.9,9.6,12,9.6z"></path>
+  </g>
+                          </svg>      </a>
+</div>
+
+        <script type="text/javascript" charset="UTF-8" src="https://storage.googleapis.com/vtcdn/assets/js/css-vars-ponyfill.js"></script>
+    <script type="text/javascript" src="https://storage.googleapis.com/vtcdn/vtaugment/app.1680274512249.js"></script>
+    
+                
+</body></html>
